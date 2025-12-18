@@ -1,0 +1,37 @@
+:root {
+    --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --primary: #0A84FF;
+    --in: #34C759; --out: #FF3B30; --sidebar: #FFFFFF;
+}
+
+[data-theme="dark"] {
+    --bg: #1C1C1E; --card: #2C2C2E; --text: #FFFFFF; --sidebar: #2C2C2E;
+}
+
+body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s; }
+
+/* PIN */
+#pin-screen { position: fixed; inset: 0; background: var(--bg); z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.dot { width: 14px; height: 14px; border: 2px solid var(--primary); border-radius: 50%; margin: 10px; }
+.dot.filled { background: var(--primary); }
+#keypad { display: grid; grid-template-columns: repeat(3, 80px); gap: 15px; margin-top: 30px; }
+.key { background: var(--card); border: none; height: 80px; border-radius: 50%; color: var(--text); font-size: 24px; font-weight: bold; }
+
+/* SIDEBAR */
+#sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: var(--sidebar); z-index: 1500; transition: 0.3s; padding-top: 60px; box-shadow: 5px 0 15px rgba(0,0,0,0.2); }
+#sidebar.open { left: 0; }
+#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1400; }
+.nav-link { padding: 20px; font-size: 18px; border-bottom: 1px solid rgba(128,128,128,0.2); }
+
+/* CARDS */
+.page { display: none; padding: 20px; padding-top: 10px; }
+.page.active { display: block; }
+.balance-card { background: linear-gradient(135deg, #0A84FF, #0056b3); color: white; border-radius: 20px; padding: 30px; text-align: center; margin-bottom: 20px; }
+.action-card { background: var(--card); border-radius: 20px; padding: 20px; }
+input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: none; background: #3A3A3C; color: white; box-sizing: border-box; }
+
+.app-header { padding: 50px 20px 10px; display: flex; justify-content: space-between; }
+.icon-btn { background: none; border: none; font-size: 24px; color: var(--text); }
+.flex-btns { display: flex; gap: 10px; margin-top: 10px; }
+.flex-btns button { flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: bold; }
+.btn-in { background: var(--in); }
+.btn-out { background: var(--out); }
