@@ -12,7 +12,6 @@
 
     <div id="pin-screen">
         <h2 style="font-weight: 700;">Il mio conto</h2>
-        <p style="color: var(--text-sec); margin-top: -10px;">Inserisci PIN</p>
         <div id="pin-dots">
             <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
@@ -23,7 +22,6 @@
         <div class="nav-link" onclick="showPage('home')">🏠 Home</div>
         <div class="nav-link" onclick="showPage('movimenti')">📊 Analisi</div>
         <div class="nav-link" onclick="showPage('cronologia')">🕒 Cronologia</div>
-        <div class="nav-link" onclick="showPage('notifiche')">🔔 Notifiche <span id="notif-badge" style="background:var(--danger); padding:2px 8px; border-radius:10px; font-size:12px">0</span></div>
     </div>
     <div class="overlay" onclick="toggleSidebar()"></div>
 
@@ -34,25 +32,21 @@
 
     <main id="page-home" class="page active">
         <div class="balance-card">
-            <span style="opacity: 0.8; font-size: 14px; text-transform: uppercase;">Saldo Totale</span>
-            <div id="main-balance" style="font-size: 42px; font-weight: 800; margin: 10px 0;">€ •••••</div>
-            <button onclick="togglePrivacy()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 16px; border-radius:20px; font-weight:600;">MOSTRA</button>
+            <span style="opacity: 0.8; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Saldo Attuale</span>
+            <div id="main-balance" style="font-size: 44px; font-weight: 800; margin: 10px 0;">€ •••••</div>
+            <button onclick="togglePrivacy()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 20px; border-radius:20px; font-weight:600;">Mostra/Nascondi</button>
         </div>
 
         <div class="action-card">
-            <h3 style="margin-top:0">Nuova Transazione</h3>
+            <h2 style="margin: 0 0 20px 0; font-size: 22px;">Nuova Operazione</h2>
             <input type="text" id="add-desc" placeholder="Descrizione">
             <input type="number" id="add-amount" placeholder="Importo €" inputmode="decimal">
-            <div class="btn-flex">
-                <button class="btn-main btn-in" onclick="saveData('income')">ENTRATA</button>
-                <button class="btn-main btn-out" onclick="saveData('expense')">USCITA</button>
+            <input type="date" id="add-date"> <div class="btn-flex">
+                <button class="btn-main btn-in" onclick="saveData('income')">Entrata</button>
+                <button class="btn-main btn-out" onclick="saveData('expense')">Uscita</button>
             </div>
         </div>
     </main>
-
-    <main id="page-movimenti" class="page"><h2>Analisi</h2><div id="list-mov"></div></main>
-    <main id="page-cronologia" class="page"><h2>Storia</h2><div id="list-hist"></div></main>
-    <main id="page-notifiche" class="page"><h2>Avvisi</h2><div id="list-notif"></div></main>
 
     <script src="script.js"></script>
 </body>
