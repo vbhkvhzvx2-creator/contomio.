@@ -1,31 +1,48 @@
 let db = JSON.parse(localStorage.getItem('conto_v4')) || [];
 let inputPin = "";
-const correctPin = "0007";
+const correctPin = "0007"; // IL TUO PIN
 let privacy = true;
 
-// --- GESTIONE PIN ---
+// --- TASTIERINO ---
 const keypad = document.getElementById('keypad');
-[1, 2, 3, 4, 5, 6, 7, 8, 9, 'DEL', 0, 'OK'].forEach(v => {
+// Layout tastierino iOS
+[1, 2, 3, 4, 5, 6, 7, 8, 9, '', 0, 'DEL'].forEach(v => {
     const btn = document.createElement('button');
     btn.className = 'key';
-    btn.innerText = v;
-    btn.onclick = () => handlePin(v);
+    if (v === '') {
+        btn.style.background = 'transparent';
+    } else {
+        btn.innerText = v;
+        btn.onclick = () => handlePin(v);
+    }
     keypad.appendChild(btn);
 });
 
 function handlePin(v) {
-    if (v === 'DEL') inputPin = inputPin.slice(0, -1);
-    else if (inputPin.length < 4 && typeof v === 'number') inputPin += v;
+    if (v === 'DEL') {
+        inputPin = inputPin.slice(0, -1);
+    } else if (inputPin.length < 4) {
+        inputPin += v;
+    }
     
-    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('filled', i < inputPin.length));
+    // Aggiorna i puntini orizzontali
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d, i) => d.classList.toggle('filled', i < inputPin.length));
 
+    // Controllo PIN
     if (inputPin === correctPin) {
         document.getElementById('pin-screen').style.transform = "translateY(-100%)";
     } else if (inputPin.length === 4) {
+        // Feedback errore (opzionale: vibrazione o reset)
         inputPin = "";
-        setTimeout(() => document.querySelectorAll('.dot').forEach(d => d.classList.remove('filled')), 200);
+        setTimeout(() => {
+            dots.forEach(d => d.classList.remove('filled'));
+        }, 250);
     }
 }
+
+// ... Resto del codice per navigazione e dati (uguale a prima)
+
 
 // --- NAVIGAZIONE ---
 function toggleSidebar() {
