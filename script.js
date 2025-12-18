@@ -52,6 +52,27 @@ function updateUI() {
 }
 
 function togglePrivacy() { privacy = !privacy; updateUI(); }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.querySelector('.overlay').style.display = document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none'; }
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isOpen = sidebar.classList.toggle('open');
+    
+    overlay.style.display = isOpen ? 'block' : 'none';
+}
+
+// Chiudi sidebar quando si cambia pagina
+function showPage(id) {
+    // Nascondi tutte le pagine
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // Mostra quella selezionata
+    document.getElementById('page-' + id).classList.add('active');
+    
+    // Chiudi il menu
+    toggleSidebar();
+    
+    // Se hai una funzione di aggiornamento UI, chiamala qui
+    if (typeof updateUI === "function") updateUI();
+}
+
 
 updateUI();
