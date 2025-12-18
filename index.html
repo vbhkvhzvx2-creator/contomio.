@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Il mio conto Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body data-theme="dark">
+
+    <div id="pin-screen">
+        <div class="pin-header">
+            <h2>Il mio conto</h2>
+            <p>Inserisci PIN per accedere</p>
+        </div>
+        <div id="pin-dots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div id="keypad"></div>
+    </div>
+
+    <div id="sidebar">
+        <div class="sidebar-header">MENU</div>
+        <nav>
+            <div class="nav-link" onclick="showPage('home')">🏠 Home</div>
+            <div class="nav-link" onclick="showPage('movimenti')">📊 Movimenti</div>
+            <div class="nav-link" onclick="showPage('cronologia')">🕒 Cronologia</div>
+            <div class="nav-link" onclick="showPage('notifiche')">🔔 Notifiche <span id="notif-count">0</span></div>
+        </nav>
+    </div>
+    <div id="overlay" onclick="toggleSidebar()"></div>
+
+    <div class="app-header">
+        <button onclick="toggleSidebar()" class="icon-btn">☰</button>
+        <button onclick="toggleTheme()" class="icon-btn">🌓</button>
+    </div>
+
+    <main id="page-home" class="page active">
+        <div class="balance-card">
+            <span>Saldo Attuale</span>
+            <h1 id="main-balance">€ •••••</h1>
+            <button onclick="togglePrivacy()" class="text-btn">Mostra/Nascondi</button>
+        </div>
+
+        <div class="action-card">
+            <h3>Nuova Operazione</h3>
+            <input type="text" id="add-desc" placeholder="Descrizione">
+            <input type="number" id="add-amount" placeholder="Importo €" inputmode="decimal">
+            <input type="date" id="add-date">
+            <div class="flex-btns">
+                <button onclick="saveItem('income')" class="btn-in">Entrata</button>
+                <button onclick="saveItem('expense')" class="btn-out">Uscita</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="page-movimenti" class="page">
+        <h2>Analisi Movimenti</h2>
+        <div class="stats">
+            <div class="stat-item in">Entrate: <span id="stat-in">0€</span></div>
+            <div class="stat-item out">Uscite: <span id="stat-out">0€</span></div>
+        </div>
+        <input type="text" id="search-mov" placeholder="Cerca movimento..." oninput="updateUI()">
+        <div id="list-mov" class="list-container"></div>
+    </main>
+
+    <main id="page-cronologia" class="page">
+        <h2>Cronologia</h2>
+        <input type="text" id="search-hist" placeholder="Filtra cronologia..." oninput="updateUI()">
+        <div id="list-hist" class="list-container"></div>
+    </main>
+
+    <main id="page-notifiche" class="page">
+        <h2>Notifiche</h2>
+        <div id="list-notif" class="list-container"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
