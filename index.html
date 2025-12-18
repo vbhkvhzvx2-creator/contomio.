@@ -7,23 +7,24 @@
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Il mio conto">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845874.png">
 </head>
 <body data-theme="dark">
 
     <div id="pin-screen">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 5px;">Il mio conto</h2>
-            <p style="color: var(--text-sec); font-size: 15px;">Inserisci il codice di accesso</p>
+        <div class="pin-container">
+            <h2 style="font-weight: 700;">Il mio conto</h2>
+            <p style="color: var(--text-sec); margin-top: -5px;">Inserisci PIN di accesso</p>
+            <div id="pin-dots">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="keypad" id="keypad"></div>
         </div>
-        <div id="pin-dots">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-        <div class="keypad" id="keypad"></div>
     </div>
 
     <div id="sidebar">
-        <div style="padding: 0 25px 20px 25px; font-size: 12px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px;">Navigazione</div>
+        <div class="sidebar-label">Menu Principale</div>
         <div class="nav-link" onclick="showPage('home')"><span>🏠</span> Home</div>
         <div class="sidebar-divider"></div>
         <div class="nav-link" onclick="showPage('movimenti')"><span>📊</span> Analisi</div>
@@ -31,7 +32,7 @@
         <div class="nav-link" onclick="showPage('cronologia')"><span>🕒</span> Cronologia</div>
         <div class="sidebar-divider"></div>
         <div class="nav-link" onclick="showPage('notifiche')">
-            <span>🔔</span> Avvisi 
+            <span>🔔</span> Scadenze 
             <span id="notif-badge" class="badge">0</span>
         </div>
     </div>
@@ -44,17 +45,16 @@
 
     <main id="page-home" class="page active">
         <div class="balance-card">
-            <span style="opacity: 0.8; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Saldo Attuale</span>
-            <div id="main-balance" style="font-size: 44px; font-weight: 800; margin: 10px 0;">€ •••••</div>
+            <span class="card-label">Saldo Attuale</span>
+            <div id="main-balance" class="balance-val">€ •••••</div>
             <button onclick="togglePrivacy()" class="privacy-btn">Mostra/Nascondi</button>
         </div>
 
         <div class="action-card">
-            <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700;">Nuova Operazione</h2>
-            <input type="text" id="add-desc" placeholder="Descrizione (es. Spesa)">
+            <h3 style="margin:0 0 15px 0">Nuova Operazione</h3>
+            <input type="text" id="add-desc" placeholder="Descrizione (es. Stipendio, Affitto)">
             <input type="number" id="add-amount" placeholder="Importo €" inputmode="decimal">
             <input type="date" id="add-date">
-            
             <div class="btn-flex">
                 <button class="btn-main btn-in" onclick="saveData('income')">Entrata</button>
                 <button class="btn-main btn-out" onclick="saveData('expense')">Uscita</button>
@@ -63,29 +63,32 @@
     </main>
 
     <main id="page-movimenti" class="page">
-        <h2 class="page-title">Analisi Movimenti</h2>
-        <div class="stats-container">
-            <div class="stat-box in">
-                <small>Entrate</small>
-                <div id="stat-inc">0,00 €</div>
-            </div>
-            <div class="stat-box out">
-                <small>Uscite</small>
-                <div id="stat-exp">0,00 €</div>
-            </div>
+        <div class="page-header">
+            <button class="back-arrow" onclick="showPage('home')">❮ Home</button>
+            <h2>Analisi</h2>
         </div>
-        <input type="text" id="search-mov" placeholder="Cerca tra i movimenti..." class="search-input" oninput="updateUI()">
+        <div class="stats-row">
+            <div class="stat-card in"><small>Entrate</small><div id="stat-inc">0,00 €</div></div>
+            <div class="stat-card out"><small>Uscite</small><div id="stat-exp">0,00 €</div></div>
+        </div>
+        <input type="text" id="search-mov" class="search-bar" placeholder="Cerca movimento..." oninput="updateUI()">
         <div id="list-mov" class="list-container"></div>
     </main>
 
     <main id="page-cronologia" class="page">
-        <h2 class="page-title">Cronologia</h2>
-        <input type="text" id="search-hist" placeholder="Filtra cronologia..." class="search-input" oninput="updateUI()">
+        <div class="page-header">
+            <button class="back-arrow" onclick="showPage('home')">❮ Home</button>
+            <h2>Cronologia</h2>
+        </div>
+        <input type="text" id="search-hist" class="search-bar" placeholder="Filtra cronologia..." oninput="updateUI()">
         <div id="list-hist" class="list-container"></div>
     </main>
 
     <main id="page-notifiche" class="page">
-        <h2 class="page-title">Scadenze e Avvisi</h2>
+        <div class="page-header">
+            <button class="back-arrow" onclick="showPage('home')">❮ Home</button>
+            <h2>Scadenze</h2>
+        </div>
         <div id="list-notif" class="list-container"></div>
     </main>
 
