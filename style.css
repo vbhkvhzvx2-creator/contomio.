@@ -1,11 +1,11 @@
 :root {
-    --bg: #1C1C1E; /* Grigio scuro Apple */
+    --bg: #1C1C1E; 
     --card: #2C2C2E;
     --text: #FFFFFF;
     --text-sec: #AEAEB2;
     --primary: #0A84FF;
-    --in: #32D74B;
-    --out: #FF453A;
+    --success: #32D74B; /* Verde iOS */
+    --danger: #FF453A;  /* Rosso iOS */
     --sidebar: #2C2C2E;
 }
 
@@ -13,64 +13,73 @@
     --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --sidebar: #FFFFFF;
 }
 
-body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; transition: 0.3s; overflow-x: hidden; }
+body { 
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, sans-serif; 
+    background: var(--bg); color: var(--text); margin: 0; transition: 0.3s; 
+}
 
-/* --- SCHERMATA PIN (FIX ORIZZONTALE) --- */
+/* --- PIN SCREEN --- */
 #pin-screen { 
     position: fixed; inset: 0; background: var(--bg); z-index: 2000; 
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
 }
 
 #pin-dots { 
-    display: flex; 
-    flex-direction: row; /* Forza l'allineamento orizzontale */
-    justify-content: center; 
-    gap: 20px; 
-    margin: 30px 0; 
+    display: flex; flex-direction: row; gap: 20px; margin: 40px 0; 
 }
 
 .dot { 
-    width: 16px; height: 16px; 
-    border: 2px solid var(--primary); 
-    border-radius: 50%; 
-    transition: background 0.2s;
+    width: 16px; height: 16px; border: 1.5px solid var(--primary); 
+    border-radius: 50%; transition: 0.2s; 
 }
-
 .dot.filled { background: var(--primary); }
 
-#keypad { 
-    display: grid; 
-    grid-template-columns: repeat(3, 85px); 
-    gap: 20px; 
-}
-
+.keypad { display: grid; grid-template-columns: repeat(3, 80px); gap: 25px; }
 .key { 
-    background: var(--card); border: none; width: 85px; height: 85px; 
-    border-radius: 50%; color: var(--text); font-size: 26px; font-weight: 500; 
+    background: var(--card); border: none; width: 80px; height: 80px; 
+    border-radius: 50%; color: var(--text); font-size: 28px; font-weight: 400; 
 }
 .key:active { background: #3A3A3C; }
 
 /* --- SIDEBAR --- */
 #sidebar { 
     position: fixed; left: -280px; top: 0; width: 280px; height: 100%; 
-    background: var(--sidebar); z-index: 1500; transition: 0.3s; padding-top: 60px; 
+    background: var(--sidebar); z-index: 1500; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-top: 60px; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
 }
 #sidebar.open { left: 0; }
-#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; z-index: 1400; }
+.nav-link { 
+    padding: 18px 25px; font-size: 17px; font-weight: 500;
+    display: flex; align-items: center; gap: 12px; border-bottom: 0.5px solid rgba(255,255,255,0.05);
+}
 
-/* --- CARDS & UI --- */
-.page { display: none; padding: 20px; }
+/* --- APP UI --- */
+.app-header { padding: 60px 20px 10px; display: flex; justify-content: space-between; align-items: center; }
+.page { display: none; padding: 20px; animation: fadeIn 0.4s; }
 .page.active { display: block; }
 
 .balance-card { 
-    background: linear-gradient(135deg, #0A84FF, #0056b3); color: white; 
-    border-radius: 24px; padding: 35px; text-align: center; margin-top: 10px;
-    box-shadow: 0 10px 25px rgba(10, 132, 255, 0.3);
+    background: linear-gradient(135deg, #0A84FF 0%, #0056D2 100%); 
+    color: white; border-radius: 28px; padding: 30px; text-align: center;
+    box-shadow: 0 10px 30px rgba(10, 132, 255, 0.3);
 }
 
-.action-card { background: var(--card); border-radius: 20px; padding: 20px; margin-top: 20px; }
-input { width: 100%; padding: 14px; margin: 8px 0; border-radius: 12px; border: none; background: #3A3A3C; color: white; box-sizing: border-box; font-size: 16px; }
+.action-card { background: var(--card); border-radius: 24px; padding: 25px; margin-top: 25px; }
 
-.app-header { padding: 50px 20px 10px; display: flex; justify-content: space-between; align-items: center; }
-.icon-btn { background: none; border: none; font-size: 28px; color: var(--text); padding: 10px; }
-.nav-link { padding: 20px; font-size: 18px; border-bottom: 1px solid rgba(128,128,128,0.1); }
+input, select { 
+    width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 14px; 
+    border: none; background: #3A3A3C; color: #FFF; font-size: 16px; box-sizing: border-box;
+}
+
+.btn-flex { display: flex; gap: 12px; margin-top: 10px; }
+.btn-main { 
+    flex: 1; padding: 16px; border-radius: 16px; border: none; 
+    font-size: 16px; font-weight: 700; color: white; transition: 0.2s;
+}
+.btn-in { background-color: var(--success); }
+.btn-out { background-color: var(--danger); }
+.btn-main:active { transform: scale(0.96); opacity: 0.8; }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1400; display: none; backdrop-filter: blur(4px); }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
