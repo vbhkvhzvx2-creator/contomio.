@@ -18,17 +18,37 @@
         <div class="keypad" id="keypad"></div>
     </div>
 
-    <div id="sidebar">
-        <div class="nav-link" onclick="showPage('home')">🏠 Home</div>
-        <div class="nav-link" onclick="showPage('movimenti')">📊 Analisi</div>
-        <div class="nav-link" onclick="showPage('cronologia')">🕒 Cronologia</div>
+   <div id="sidebar">
+    <div style="padding: 0 25px 20px 25px; font-size: 13px; color: #8E8E93; text-transform: uppercase; letter-spacing: 1px;">
+        Navigazione
     </div>
-    <div class="overlay" onclick="toggleSidebar()"></div>
+    
+    <div class="nav-link" onclick="showPage('home')">
+        <span>🏠</span> Home
+    </div>
+    
+    <div class="sidebar-divider"></div>
+    
+    <div class="nav-link" onclick="showPage('movimenti')">
+        <span>📊</span> Analisi
+    </div>
+    
+    <div class="sidebar-divider"></div>
+    
+    <div class="nav-link" onclick="showPage('cronologia')">
+        <span>🕒</span> Cronologia
+    </div>
+    
+    <div class="sidebar-divider"></div>
+    
+    <div class="nav-link" onclick="showPage('notifiche')">
+        <span>🔔</span> Avvisi 
+        <span id="notif-badge" style="margin-left: auto; background: #FF453A; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;">0</span>
+    </div>
+</div>
 
-    <div class="app-header">
-        <button onclick="toggleSidebar()" style="background:none; border:none; font-size:28px; color:var(--text)">☰</button>
-        <button onclick="toggleTheme()" style="background:none; border:none; font-size:24px;">🌓</button>
-    </div>
+<div class="overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 
     <main id="page-home" class="page active">
         <div class="balance-card">
