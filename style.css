@@ -56,3 +56,4 @@ input { width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 16px; bo
 .stat-card.in { background: rgba(50, 215, 75, 0.1); color: var(--success); }
 .stat-card.out { background: rgba(255, 69, 58, 0.1); color: var(--danger); }
 .badge { background: var(--danger); color: white; padding: 2px 9px; border-radius: 12px; font-size: 12px; margin-left: auto; font-weight: 800; }
+
