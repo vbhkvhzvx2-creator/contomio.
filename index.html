@@ -3,78 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Conto iOS</title>
+    <title>Il mio conto Pro</title>
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845874.png">
 </head>
 <body data-theme="dark">
 
     <div id="pin-screen">
-        <h2 style="font-weight: 700;">Il mio conto</h2>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 5px;">Il mio conto</h2>
+            <p style="color: var(--text-sec); font-size: 15px;">Inserisci il codice di accesso</p>
+        </div>
         <div id="pin-dots">
             <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
         </div>
         <div class="keypad" id="keypad"></div>
     </div>
 
- <div id="sidebar">
-    <div style="padding: 0 25px 20px 25px; font-size: 13px; color: #8E8E93; text-transform: uppercase; letter-spacing: 1px;">
-        Navigazione
+    <div id="sidebar">
+        <div style="padding: 0 25px 20px 25px; font-size: 12px; color: var(--text-sec); text-transform: uppercase; letter-spacing: 1px;">Navigazione</div>
+        <div class="nav-link" onclick="showPage('home')"><span>🏠</span> Home</div>
+        <div class="sidebar-divider"></div>
+        <div class="nav-link" onclick="showPage('movimenti')"><span>📊</span> Analisi</div>
+        <div class="sidebar-divider"></div>
+        <div class="nav-link" onclick="showPage('cronologia')"><span>🕒</span> Cronologia</div>
+        <div class="sidebar-divider"></div>
+        <div class="nav-link" onclick="showPage('notifiche')">
+            <span>🔔</span> Avvisi 
+            <span id="notif-badge" class="badge">0</span>
+        </div>
     </div>
-    
-    <div class="nav-link" onclick="showPage('home')">
-        <span>🏠</span> Home
-    </div>
-    
-    <div class="sidebar-divider"></div>
-    
-    <div class="nav-link" onclick="showPage('movimenti')">
-        <span>📊</span> Analisi
-    </div>
-    
-    <div class="sidebar-divider"></div>
-    
-    <div class="nav-link" onclick="showPage('cronologia')">
-        <span>🕒</span> Cronologia
-    </div>
-    
-    <div class="sidebar-divider"></div>
-    
-    <div class="nav-link" onclick="showPage('notifiche')">
-        <span>🔔</span> Avvisi 
-        <span id="notif-badge" style="margin-left: auto; background: #FF453A; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;">0</span>
-    </div>
-</div>
+    <div class="overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-<div class="overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-    
-    <div class="nav-link" onclick="showPage('notifiche')">
-        <span>🔔</span> Avvisi 
-        <span id="notif-badge" style="margin-left: auto; background: #FF453A; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;">0</span>
+    <div class="app-header">
+        <button onclick="toggleSidebar()" class="icon-btn">☰</button>
+        <button onclick="toggleTheme()" class="icon-btn">🌓</button>
     </div>
-</div>
-
-<div class="overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
 
     <main id="page-home" class="page active">
         <div class="balance-card">
             <span style="opacity: 0.8; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Saldo Attuale</span>
             <div id="main-balance" style="font-size: 44px; font-weight: 800; margin: 10px 0;">€ •••••</div>
-            <button onclick="togglePrivacy()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 20px; border-radius:20px; font-weight:600;">Mostra/Nascondi</button>
+            <button onclick="togglePrivacy()" class="privacy-btn">Mostra/Nascondi</button>
         </div>
 
         <div class="action-card">
-            <h2 style="margin: 0 0 20px 0; font-size: 22px;">Nuova Operazione</h2>
-            <input type="text" id="add-desc" placeholder="Descrizione">
+            <h2 style="margin: 0 0 20px 0; font-size: 20px; font-weight: 700;">Nuova Operazione</h2>
+            <input type="text" id="add-desc" placeholder="Descrizione (es. Spesa)">
             <input type="number" id="add-amount" placeholder="Importo €" inputmode="decimal">
-            <input type="date" id="add-date"> <div class="btn-flex">
+            <input type="date" id="add-date">
+            
+            <div class="btn-flex">
                 <button class="btn-main btn-in" onclick="saveData('income')">Entrata</button>
                 <button class="btn-main btn-out" onclick="saveData('expense')">Uscita</button>
             </div>
         </div>
+    </main>
+
+    <main id="page-movimenti" class="page">
+        <h2 class="page-title">Analisi Movimenti</h2>
+        <div class="stats-container">
+            <div class="stat-box in">
+                <small>Entrate</small>
+                <div id="stat-inc">0,00 €</div>
+            </div>
+            <div class="stat-box out">
+                <small>Uscite</small>
+                <div id="stat-exp">0,00 €</div>
+            </div>
+        </div>
+        <input type="text" id="search-mov" placeholder="Cerca tra i movimenti..." class="search-input" oninput="updateUI()">
+        <div id="list-mov" class="list-container"></div>
+    </main>
+
+    <main id="page-cronologia" class="page">
+        <h2 class="page-title">Cronologia</h2>
+        <input type="text" id="search-hist" placeholder="Filtra cronologia..." class="search-input" oninput="updateUI()">
+        <div id="list-hist" class="list-container"></div>
+    </main>
+
+    <main id="page-notifiche" class="page">
+        <h2 class="page-title">Scadenze e Avvisi</h2>
+        <div id="list-notif" class="list-container"></div>
     </main>
 
     <script src="script.js"></script>
