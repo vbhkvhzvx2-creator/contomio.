@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Il mio conto Pro</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2845/2845874.png">
+
+<style>
+:root {
+--bg-dark: #1C1C1E; /* Grigio scuro Apple */
+--card-bg: #2C2C2E;
+--primary: #0A84FF;
+--success: #32D74B;
+--danger: #FF453A;
+--warning: #FFD60A;
+--text: #FFFFFF;
+--text-sec: #8E8E93;
+}
+
+body {
+font-family: -apple-system, system-ui, sans-serif;
+background-color: var(--bg-dark);
+color: var(--text);
+margin: 0;
+padding: 0;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
+}
+
+/* --- SCHERMATA PIN --- */
+#pin-screen {
+position: fixed;
+top: 0; left: 0; width: 100%; height: 100%;
+background: var(--bg-dark);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+z-index: 9999;
+transition: transform 0.5s ease-in-out;
+}
+
+.pin-dots { display: flex; gap: 20px; margin-bottom: 40px; }
+.dot { width: 15px; height: 15px; border-radius: 50%; border: 2px solid var(--primary); }
+.dot.active { background: var(--primary); }
+
+.keypad { display: grid; grid-template-columns: repeat(3, 80px); gap: 20px; text-align: center; }
+.key { 
+width: 80px; height: 80px; border-radius: 50%; 
+background: var(--card-bg); font-size: 24px; font-weight: 600;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; active { background: #3A3A3C; }
+}
+
+/* --- LAYOUT GENERALE --- */
+.page { display: none; padding: env(safe-area-inset-top) 20px 100px 20px; animation: fadeIn 0.3s; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+h1 { font-size: 32px; font-weight: 800; margin: 20px 0; }
+
+/* --- COMPONENTI --- */
+.card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; }
+
+.balance-container { text-align: center; padding: 30px 0; }
+.balance-amount { font-size: 48px; font-weight: 800; letter-spacing: -1px; margin: 10px 0; }
+.hide-toggle { color: var(--primary); font-size: 14px; font-weight: 600; cursor: pointer; }
+
+.btn-group { display: flex; gap: 10px; }
+.btn { 
+flex: 1; height: 50px; border-radius: 12px; border: none; 
+font-weight: 700; font-size: 15px; cursor: pointer;
+}
+.btn-inc { background: var(--success); color: white; }
+.btn-exp { background: var(--danger); color: white; }
+
+/* --- MENU IN BASSO --- */
+.tab-bar {
+position: fixed; bottom: 0; width: 100%; height: 85px;
+background: rgba(44, 44, 46, 0.95);
+backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+display: flex; justify-content: space-around; padding-top: 10px;
+border-top: 0.5px solid #38383A;
+}
+.tab-item { text-align: center; color: var(--text-sec); font-size: 10px; cursor: pointer; }
+.tab-item.active { color: var(--primary); }
+.tab-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+
+/* --- MOVIMENTI & STORICO --- */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.stat-box { padding: 15px; border-radius: 15px; text-align: left; }
+
+.transaction-item {
+display: flex; justify-content: space-between; align-items: center;
+padding: 15px 0; border-bottom: 0.5px solid #38383A;
+}
+.notif-item { background: rgba(255, 214, 10, 0.1); border-left: 4px solid var(--warning); padding: 15px; border-radius: 12px; margin-bottom: 10px; }
+
+input, select {
+width: 100%; padding: 12px; background: #3A3A3C; border: none; 
+border-radius: 10px; color: white; margin-bottom: 10px; font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<div id="pin-screen">
+<h2 style="margin-bottom:10px">Inserisci PIN</h2>
+<p style="color:var(--text-sec); margin-bottom:30px">Il tuo conto è protetto</p>
+<div class="pin-dots" id="pin-dots">
+<div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+<div class="keypad">
+<div class="key" onclick="pressKey('1')">1</div><div class="key" onclick="pressKey('2')">2</div><div class="key" onclick="pressKey('3')">3</div>
+<div class="key" onclick="pressKey('4')">4</div><div class="key" onclick="pressKey('5')">5</div><div class="key" onclick="pressKey('6')">6</div>
+<div class="key" onclick="pressKey('7')">7</div><div class="key" onclick="pressKey('8')">8</div><div class="key" onclick="pressKey('9')">9</div>
+<div class="key" style="background:transparent"></div><div class="key" onclick="pressKey('0')">0</div>
+<div class="key" onclick="pressKey('DEL')" style="font-size:16px">DEL</div>
+</div>
+</div>
+
+<div id="home" class="page active">
+<h1>Casa</h1>
+<div class="card balance-container">
+<div class="balance-label" style="color:var(--text-sec)">Saldo Totale</div>
+<div class="balance-amount" id="main-balance">€ •••••</div>
+<div class="hide-toggle" onclick="toggleBalance()">MOSTRA SALDO</div>
+</div>
+
+<div class="card">
+<h3>Nuova Registrazione</h3>
+<input type="text" id="desc" placeholder="Descrizione">
+<input type="number" id="amount" placeholder="Importo €" inputmode="decimal">
+<input type="date" id="dueDate">
+<div class="btn-group">
+<button class="btn btn-inc" onclick="addEntry('income')">ENTRATA</button>
+<button class="btn btn-exp" onclick="addEntry('expense')">USCITA</button>
+</div>
+</div>
+</div>
+
+<div id="movimenti" class="page">
+<h1>Analisi</h1>
+<div class="stats-grid">
+<div class="stat-box" style="background: rgba(50, 215, 75, 0.1);">
+<small style="color:var(--success)">Entrate</small>
+<div style="font-size:20px; font-weight:700" id="stat-inc">€ 0</div>
+</div>
+<div class="stat-box" style="background: rgba(255, 69, 58, 0.1);">
+<small style="color:var(--danger)">Uscite</small>
+<div style="font-size:20px; font-weight:700" id="stat-exp">€ 0</div>
+</div>
+</div>
+<div class="card" style="text-align:center">
+<small style="color:var(--text-sec)">Differenza Netta</small>
+<div style="font-size:28px; font-weight:800" id="stat-diff">€ 0</div>
+</div>
+</div>
+
+<div id="cronologia" class="page">
+<h1>Storia</h1>
+<div class="card" id="history-list"></div>
+</div>
+
+<div id="notifiche" class="page">
+<h1>Avvisi</h1>
+<div id="notif-list"></div>
+</div>
+
+<div class="tab-bar">
+<div class="tab-item active" onclick="nav('home', this)">
+<span class="tab-icon">🏠</span>Home
+</div>
+<div class="tab-item" onclick="nav('movimenti', this)">
+<span class="tab-icon">📊</span>Analisi
+</div>
+<div class="tab-item" onclick="nav('cronologia', this)">
+<span class="tab-icon">🕒</span>Storia
+</div>
+<div class="tab-item" onclick="nav('notifiche', this)">
+<span class="tab-icon">🔔</span>Avvisi
+</div>
+</div>
+
+<script>
+// --- SICUREZZA PIN ---
+let currentPin = "";
+const correctPin = "1234"; // MODIFICA QUI IL TUO PIN
+
+function pressKey(key) {
+if(key === 'DEL') {
+currentPin = currentPin.slice(0, -1);
+} else if(currentPin.length < 4) {
+currentPin += key;
+}
+
+updatePinDots();
+
+if(currentPin === correctPin) {
+document.getElementById('pin-screen').style.transform = "translateY(-100%)";
+setTimeout(() => document.getElementById('pin-screen').style.display = "none", 500);
+} else if(currentPin.length === 4) {
+setTimeout(() => { currentPin = ""; updatePinDots(); }, 200);
+}
+}
+
+function updatePinDots() {
+const dots = document.querySelectorAll('.dot');
+dots.forEach((dot, i) => {
+dot.classList.toggle('active', i < currentPin.length);
+});
+}
+
+// --- LOGICA APP ---
+let db = JSON.parse(localStorage.getItem('conto_pro_db')) || [];
+let isHidden = true;
+
+function nav(pageId, el) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+document.getElementById(pageId).classList.add('active');
+el.classList.add('active');
+refreshUI();
+}
+
+function addEntry(type) {
+const desc = document.getElementById('desc').value;
+const amount = parseFloat(document.getElementById('amount').value);
+const dueDate = document.getElementById('dueDate').value;
+
+if(!desc || isNaN(amount)) return;
+
+db.push({ id: Date.now(), desc, amount, type, dueDate, date: new Date().toLocaleDateString() });
+localStorage.setItem('conto_pro_db', JSON.stringify(db));
+
+document.getElementById('desc').value = '';
+document.getElementById('amount').value = '';
+refreshUI();
+}
+
+function toggleBalance() {
+isHidden = !isHidden;
+refreshUI();
+}
+
+function refreshUI() {
+let inc = 0, exp = 0;
+const historyList = document.getElementById('history-list');
+const notifList = document.getElementById('notif-list');
+historyList.innerHTML = '';
+notifList.innerHTML = '';
+
+db.slice().reverse().forEach(item => {
+if(item.type === 'income') inc += item.amount; else exp += item.amount;
+
+// Cronologia
+const div = document.createElement('div');
+div.className = 'transaction-item';
+div.innerHTML = `
+<div><strong>${item.desc}</strong><br><small style="color:var(--text-sec)">${item.date}</small></div>
+<div style="color:${item.type === 'income' ? 'var(--success)' : 'var(--danger)'}">
+${item.type === 'income' ? '+' : '-'}${item.amount.toFixed(2)}€
+</div>
+`;
+historyList.appendChild(div);
+
+// Notifiche (Scadenze)
+if(item.dueDate) {
+const nDiv = document.createElement('div');
+nDiv.className = 'notif-item';
+nDiv.innerHTML = `<strong>Scadenza imminente</strong><br>${item.desc} il ${item.dueDate}`;
+notifList.appendChild(nDiv);
+}
+});
+
+// Saldo
+const total = inc - exp;
+document.getElementById('main-balance').innerText = isHidden ? "€ •••••" : `€ ${total.toFixed(2)}`;
+document.querySelector('.hide-toggle').innerText = isHidden ? "MOSTRA SALDO" : "NASCONDI SALDO";
+
+// Analisi
+document.getElementById('stat-inc').innerText = `€ ${inc.toFixed(2)}`;
+document.getElementById('stat-exp').innerText = `€ ${exp.toFixed(2)}`;
+document.getElementById('stat-diff').innerText = `€ ${(inc - exp).toFixed(2)}`;
+document.getElementById('stat-diff').style.color = (inc - exp) >= 0 ? 'var(--success)' : 'var(--danger)';
+}
+
+refreshUI();
+</script>
+
+</body>
+</html>
