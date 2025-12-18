@@ -18,7 +18,7 @@
         <div class="keypad" id="keypad"></div>
     </div>
 
-   <div id="sidebar">
+ <div id="sidebar">
     <div style="padding: 0 25px 20px 25px; font-size: 13px; color: #8E8E93; text-transform: uppercase; letter-spacing: 1px;">
         Navigazione
     </div>
@@ -40,6 +40,15 @@
     </div>
     
     <div class="sidebar-divider"></div>
+    
+    <div class="nav-link" onclick="showPage('notifiche')">
+        <span>🔔</span> Avvisi 
+        <span id="notif-badge" style="margin-left: auto; background: #FF453A; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: bold;">0</span>
+    </div>
+</div>
+
+<div class="overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
     
     <div class="nav-link" onclick="showPage('notifiche')">
         <span>🔔</span> Avvisi 
